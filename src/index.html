@@ -6,6 +6,32 @@
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <script>
+    // Handle redirect from 404.html for GitHub Pages SPA routing
+    (function() {
+      var redirect = sessionStorage.redirect;
+      delete sessionStorage.redirect;
+      if (redirect && redirect !== location.href) {
+        history.replaceState(null, null, redirect);
+      }
+      // Also handle the query-param style redirect
+      var l = window.location;
+      if (l.search[1] === 'p' && l.search.indexOf('p=/') === 1) {
+        var decoded = l.search.slice(1).split('&').reduce(function(o, s) {
+          var r = s.split('=');
+          o[r[0]] = r.slice(1).join('=').replace(/~and~/g, '&');
+          return o;
+        }, {});
+        if (decoded.p !== undefined) {
+          history.replaceState(null, null,
+            l.pathname.slice(0, -1) + (decoded.p || '') +
+            (decoded.q ? ('?' + decoded.q) : '') +
+            l.hash
+          );
+        }
+      }
+    }());
+  </script>
 </head>
 <body>
   <app-root></app-root>

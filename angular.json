@@ -16,6 +16,8 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
+            "outputPath": "dist/gnome-defenders",
+            "baseHref": "/gnome-defenders/",
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
             "assets": [

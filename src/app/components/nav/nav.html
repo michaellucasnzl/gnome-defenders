@@ -1,0 +1,33 @@
+<nav class="bg-green-800 text-white shadow-lg">
+  <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+    <a routerLink="/shop" class="flex items-center gap-2 text-xl font-bold tracking-wide hover:text-green-200 transition-colors">
+      <span class="text-2xl">🧙</span>
+      <span>Gnome Defenders</span>
+    </a>
+    <div class="flex items-center gap-6">
+      <a
+        routerLink="/shop"
+        routerLinkActive="text-green-200 font-semibold border-b-2 border-green-300"
+        class="hover:text-green-200 transition-colors pb-1">
+        Shop
+      </a>
+      <a
+        routerLink="/cart"
+        routerLinkActive="text-green-200 font-semibold border-b-2 border-green-300"
+        class="relative hover:text-green-200 transition-colors pb-1">
+        Cart
+        @if (cart.totalItems() > 0) {
+          <span class="absolute -top-2 -right-4 bg-yellow-400 text-green-900 text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+            {{ cart.totalItems() }}
+          </span>
+        }
+      </a>
+      <a
+        routerLink="/admin"
+        routerLinkActive="text-green-200 font-semibold border-b-2 border-green-300"
+        class="hover:text-green-200 transition-colors pb-1">
+        Admin
+      </a>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,65 @@
+<div class="min-h-screen bg-green-50">
+  <div class="max-w-6xl mx-auto px-4 py-8">
+    <div class="mb-8 text-center">
+      <h1 class="text-4xl font-bold text-green-900 mb-2">The Gnome Shop</h1>
+      <p class="text-green-700 text-lg">Defend your garden with pride. Choose your guardian.</p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      @for (gnome of gnomeService.gnomes(); track gnome.id) {
+        <div class="bg-white rounded-2xl shadow-md overflow-hidden flex flex-col hover:shadow-xl transition-shadow border border-green-100">
+          <img
+            [src]="gnome.imageUrl"
+            [alt]="gnome.name"
+            class="w-full h-48 object-cover bg-green-50"
+          />
+          <div class="p-4 flex flex-col flex-1">
+            <h2 class="text-lg font-bold text-green-900 mb-1">{{ gnome.name }}</h2>
+            <p class="text-sm text-gray-600 mb-3 flex-1">{{ gnome.description }}</p>
+
+            <div class="mb-3 space-y-1">
+              <div class="flex items-center gap-2 text-xs text-gray-700">
+                <span class="w-20 font-medium">Strength</span>
+                <div class="flex gap-0.5">
+                  @for (pip of abilityBar(gnome.abilities.strength); track $index) {
+                    <div class="w-3 h-3 rounded-sm" [class]="pip === 'filled' ? 'bg-red-500' : 'bg-gray-200'"></div>
+                  }
+                </div>
+                <span class="ml-1">{{ gnome.abilities.strength }}</span>
+              </div>
+              <div class="flex items-center gap-2 text-xs text-gray-700">
+                <span class="w-20 font-medium">Defence</span>
+                <div class="flex gap-0.5">
+                  @for (pip of abilityBar(gnome.abilities.defence); track $index) {
+                    <div class="w-3 h-3 rounded-sm" [class]="pip === 'filled' ? 'bg-blue-500' : 'bg-gray-200'"></div>
+                  }
+                </div>
+                <span class="ml-1">{{ gnome.abilities.defence }}</span>
+              </div>
+              <div class="flex items-center gap-2 text-xs text-gray-700">
+                <span class="w-20 font-medium">Appearance</span>
+                <div class="flex gap-0.5">
+                  @for (pip of abilityBar(gnome.abilities.appearance); track $index) {
+                    <div class="w-3 h-3 rounded-sm" [class]="pip === 'filled' ? 'bg-purple-500' : 'bg-gray-200'"></div>
+                  }
+                </div>
+                <span class="ml-1">{{ gnome.abilities.appearance }}</span>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between mt-auto pt-3 border-t border-green-100">
+              <span class="text-lg font-bold text-green-800">${{ gnome.price.toFixed(2) }}</span>
+              <button
+                (click)="addToCart(gnome)"
+                [class]="isInCart(gnome.id)
+                  ? 'bg-green-600 text-white text-sm px-3 py-1.5 rounded-lg cursor-default'
+                  : 'bg-green-700 hover:bg-green-800 text-white text-sm px-3 py-1.5 rounded-lg transition-colors'">
+                {{ isInCart(gnome.id) ? '✓ In Cart' : 'Add to Cart' }}
+              </button>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>

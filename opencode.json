@@ -20,11 +20,11 @@
       "enabled": true
     },
     "stitch": {
-      "type": "remote",
-      "url": "https://stitch.googleapis.com/mcp",
+      "type": "local",
+      "command": ["node", "scripts/stitch-mcp.mjs"],
       "enabled": true,
-      "headers": {
-        "X-Goog-Api-Key": "{env:STITCH_API_KEY}"
+      "env": {
+        "STITCH_API_KEY": "{env:STITCH_API_KEY}"
       }
     }
   },

@@ -1,6 +1,7 @@
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { fileURLToPath } from "node:url";
+import { execSync } from "node:child_process";
 
 // Load .env from the project root if STITCH_API_KEY isn't already exported
 // in the process environment (OpenCode's {env:...} interpolation only reads
@@ -18,11 +19,7 @@ if (!process.env.STITCH_API_KEY) {
 // @modelcontextprotocol/sdk lives nested inside its own node_modules, so bare
 // ESM imports from the project dir cannot resolve it. Resolve via absolute
 // file URLs derived from the global node_modules root instead.
-const globalRoot = path.join(
-  path.dirname(path.dirname(process.execPath)),
-  "lib",
-  "node_modules",
-);
+const globalRoot = execSync("npm root -g", { encoding: "utf-8" }).trim();
 const stitchPkg = path.join(globalRoot, "@google", "stitch-sdk");
 const mcpSdk = path.join(
   stitchPkg,

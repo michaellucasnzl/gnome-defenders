@@ -1,12 +1,13 @@
 import path from "node:path";
 import { pathToFileURL, fileURLToPath } from "node:url";
+import { execSync } from "node:child_process";
 
 if (!process.env.STITCH_API_KEY) {
   const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
   try { process.loadEnvFile(path.join(projectRoot, ".env")); } catch {}
 }
 
-const globalRoot = path.join(path.dirname(path.dirname(process.execPath)), "lib", "node_modules");
+const globalRoot = execSync("npm root -g", { encoding: "utf-8" }).trim();
 const stitchPkg = path.join(globalRoot, "@google", "stitch-sdk");
 const { StitchToolClient } = await import(pathToFileURL(path.join(stitchPkg, "dist", "src", "index.js")).href);
 

@@ -10,9 +10,8 @@ import { CartService } from '../../services/cart.service';
 export class CartComponent {
   protected readonly cartService = inject(CartService);
 
-  updateQuantity(gnomeId: number, event: Event): void {
-    const value = parseInt((event.target as HTMLInputElement).value, 10);
-    this.cartService.updateQuantity(gnomeId, value);
+  updateQuantity(gnomeId: number, quantity: number): void {
+    this.cartService.updateQuantity(gnomeId, quantity);
   }
 
   remove(gnomeId: number): void {
@@ -20,7 +19,7 @@ export class CartComponent {
   }
 
   checkout(): void {
-    alert('Order placed! Your gnomes are on their way. 🧙');
+    alert('Order placed! Your gnomes are on their way.');
     this.cartService.clear();
   }
 }

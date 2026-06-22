@@ -1,33 +1,69 @@
-<nav class="bg-green-800 text-white shadow-lg">
-  <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-    <a routerLink="/shop" class="flex items-center gap-2 text-xl font-bold tracking-wide hover:text-green-200 transition-colors">
-      <span class="text-2xl">🧙</span>
-      <span>Gnome Defenders</span>
+<header class="bg-surface/90 fixed top-0 z-50 flex h-16 w-full items-center justify-between border-b border-magic-leaf/10 px-4 backdrop-blur-md md:px-16">
+  <a routerLink="/shop" class="font-headline text-headline-md font-bold text-magic-leaf">
+    Gnome Defenders
+  </a>
+
+  <nav class="hidden items-center gap-6 md:flex">
+    <a
+      routerLink="/shop"
+      routerLinkActive="border-lantern-glow text-primary"
+      class="font-label text-label-md border-b-2 border-transparent pb-1 text-on-surface-variant transition-colors hover:text-magic-leaf"
+    >
+      Shop
     </a>
-    <div class="flex items-center gap-6">
-      <a
-        routerLink="/shop"
-        routerLinkActive="text-green-200 font-semibold border-b-2 border-green-300"
-        class="hover:text-green-200 transition-colors pb-1">
-        Shop
-      </a>
-      <a
-        routerLink="/cart"
-        routerLinkActive="text-green-200 font-semibold border-b-2 border-green-300"
-        class="relative hover:text-green-200 transition-colors pb-1">
-        Cart
-        @if (cart.totalItems() > 0) {
-          <span class="absolute -top-2 -right-4 bg-yellow-400 text-green-900 text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-            {{ cart.totalItems() }}
-          </span>
-        }
-      </a>
-      <a
-        routerLink="/admin"
-        routerLinkActive="text-green-200 font-semibold border-b-2 border-green-300"
-        class="hover:text-green-200 transition-colors pb-1">
-        Admin
-      </a>
+    <a
+      routerLink="/cart"
+      routerLinkActive="border-lantern-glow text-primary"
+      class="font-label text-label-md relative border-b-2 border-transparent pb-1 text-on-surface-variant transition-colors hover:text-magic-leaf"
+    >
+      Cart
+      @if (cart.totalItems() > 0) {
+        <span class="absolute -top-2 -right-4 flex h-5 w-5 items-center justify-center rounded-full bg-secondary-container text-xs font-bold text-on-secondary-container">
+          {{ cart.totalItems() }}
+        </span>
+      }
+    </a>
+    <a
+      routerLink="/admin"
+      routerLinkActive="border-lantern-glow text-primary"
+      class="font-label text-label-md border-b-2 border-transparent pb-1 text-on-surface-variant transition-colors hover:text-magic-leaf"
+    >
+      Admin
+    </a>
+  </nav>
+
+  <div class="flex items-center gap-4">
+    <span class="material-symbols-outlined text-primary">shield</span>
+    <span class="material-symbols-outlined text-primary">energy_savings_leaf</span>
+    <div class="h-8 w-8 overflow-hidden rounded-full border border-magic-leaf/20 bg-surface-container">
+      <img src="images/Gareth the Guard.jpeg" alt="Profile" class="h-full w-full object-cover" />
     </div>
   </div>
+</header>
+
+<nav class="fixed bottom-0 z-50 flex h-20 w-full items-center justify-around rounded-t-xl bg-surface-container shadow-sm md:hidden">
+  <a
+    routerLink="/shop"
+    routerLinkActive="bg-secondary-container text-on-secondary-container"
+    class="flex flex-col items-center rounded-full px-4 py-1 text-on-surface-variant transition-all"
+  >
+    <span class="material-symbols-outlined">eco</span>
+    <span class="font-label text-label-sm">Shop</span>
+  </a>
+  <a
+    routerLink="/cart"
+    routerLinkActive="bg-secondary-container text-on-secondary-container"
+    class="flex flex-col items-center rounded-full px-4 py-1 text-on-surface-variant transition-all"
+  >
+    <span class="material-symbols-outlined">shopping_cart</span>
+    <span class="font-label text-label-sm">Cart</span>
+  </a>
+  <a
+    routerLink="/admin"
+    routerLinkActive="bg-secondary-container text-on-secondary-container"
+    class="flex flex-col items-center rounded-full px-4 py-1 text-on-surface-variant transition-all"
+  >
+    <span class="material-symbols-outlined">auto_stories</span>
+    <span class="font-label text-label-sm">Admin</span>
+  </a>
 </nav>

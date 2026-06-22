@@ -1,226 +1,238 @@
-<div class="min-h-screen bg-green-50">
-  <div class="max-w-5xl mx-auto px-4 py-8">
+<main class="mx-auto max-w-container px-4 pb-32 pt-24 md:px-16">
+  <!-- LIST VIEW -->
+  @if (view() === 'list') {
+    <div>
+      <header class="mb-8 space-y-2">
+        <h1 class="font-display text-display-lg text-primary">Admin Panel</h1>
+        <p class="font-body text-body-lg text-on-surface-variant">Select a gnome to view or edit their details.</p>
+      </header>
 
-    <!-- LIST VIEW -->
-    @if (view() === 'list') {
-      <div>
-        <h1 class="text-4xl font-bold text-green-900 mb-2">Admin Panel</h1>
-        <p class="text-green-700 mb-8">Select a gnome to view or edit their details.</p>
-
-        <div class="bg-white rounded-2xl shadow-md overflow-hidden border border-green-100">
-          <table class="w-full">
-            <thead class="bg-green-800 text-white">
-              <tr>
-                <th class="text-left px-6 py-3 font-semibold">Image</th>
-                <th class="text-left px-6 py-3 font-semibold">Name</th>
-                <th class="text-center px-6 py-3 font-semibold">STR</th>
-                <th class="text-center px-6 py-3 font-semibold">DEF</th>
-                <th class="text-center px-6 py-3 font-semibold">APP</th>
-                <th class="text-right px-6 py-3 font-semibold">Price</th>
-                <th class="px-6 py-3"></th>
+      <div class="overflow-hidden rounded-xl border border-magic-leaf/10 bg-white">
+        <table class="w-full">
+          <thead class="bg-primary text-on-primary">
+            <tr>
+              <th class="px-6 py-3 text-left font-label text-label-md">Image</th>
+              <th class="px-6 py-3 text-left font-label text-label-md">Name</th>
+              <th class="px-6 py-3 text-center font-label text-label-md">STR</th>
+              <th class="px-6 py-3 text-center font-label text-label-md">DEF</th>
+              <th class="px-6 py-3 text-center font-label text-label-md">APP</th>
+              <th class="px-6 py-3 text-right font-label text-label-md">Price</th>
+              <th class="px-6 py-3"></th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-outline-variant/30">
+            @for (gnome of gnomeService.gnomes(); track gnome.id) {
+              <tr class="transition-colors hover:bg-surface-container-low">
+                <td class="px-6 py-3">
+                  <img [src]="gnome.imageUrl" [alt]="gnome.name" class="h-12 w-12 rounded-lg object-cover" />
+                </td>
+                <td class="px-6 py-3 font-headline text-headline-md text-primary">{{ gnome.name }}</td>
+                <td class="px-6 py-3 text-center font-body text-body-sm">
+                  <span class="rounded-full bg-error/10 px-2 py-1 text-error">{{ gnome.abilities.strength }}</span>
+                </td>
+                <td class="px-6 py-3 text-center font-body text-body-sm">
+                  <span class="rounded-full bg-magic-leaf/10 px-2 py-1 text-magic-leaf">{{ gnome.abilities.defence }}</span>
+                </td>
+                <td class="px-6 py-3 text-center font-body text-body-sm">
+                  <span class="rounded-full bg-tertiary/10 px-2 py-1 text-tertiary">{{ gnome.abilities.appearance }}</span>
+                </td>
+                <td class="px-6 py-3 text-right font-body text-body-md text-on-surface-variant">${{ gnome.price.toFixed(2) }}</td>
+                <td class="px-6 py-3 text-right">
+                  <button
+                    (click)="selectGnome(gnome.id)"
+                    class="rounded-lg bg-primary px-4 py-1.5 font-label text-label-md text-on-primary transition-colors hover:bg-primary-container"
+                  >
+                    View
+                  </button>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              @for (gnome of gnomeService.gnomes(); track gnome.id) {
-                <tr class="border-t border-green-100 hover:bg-green-50 transition-colors">
-                  <td class="px-6 py-3">
-                    <img [src]="gnome.imageUrl" [alt]="gnome.name" class="w-12 h-12 rounded-lg object-cover bg-green-50" />
-                  </td>
-                  <td class="px-6 py-3 font-semibold text-green-900">{{ gnome.name }}</td>
-                  <td class="px-6 py-3 text-center text-sm">{{ gnome.abilities.strength }}</td>
-                  <td class="px-6 py-3 text-center text-sm">{{ gnome.abilities.defence }}</td>
-                  <td class="px-6 py-3 text-center text-sm">{{ gnome.abilities.appearance }}</td>
-                  <td class="px-6 py-3 text-right text-sm text-gray-700">${{ gnome.price.toFixed(2) }}</td>
-                  <td class="px-6 py-3 text-right">
-                    <button
-                      (click)="selectGnome(gnome.id)"
-                      class="bg-green-700 hover:bg-green-800 text-white text-sm px-4 py-1.5 rounded-lg transition-colors">
-                      View
-                    </button>
-                  </td>
-                </tr>
-              }
-            </tbody>
-          </table>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
+
+  <!-- DETAIL VIEW -->
+  @if (view() === 'detail' && selected()) {
+    <div>
+      <button
+        (click)="backToList()"
+        class="mb-6 inline-flex items-center gap-1 font-label text-label-md text-magic-leaf transition-colors hover:text-primary"
+      >
+        <span class="material-symbols-outlined text-sm">arrow_back</span>
+        Back to list
+      </button>
+
+      <div class="rounded-xl border border-magic-leaf/10 bg-white p-8">
+        <div class="flex flex-col gap-8 sm:flex-row">
+          <img
+            [src]="selected()!.imageUrl"
+            [alt]="selected()!.name"
+            class="h-48 w-48 flex-shrink-0 rounded-xl object-cover"
+          />
+          <div class="flex-1">
+            <div class="mb-4 flex items-start justify-between">
+              <h2 class="font-display text-display-lg text-primary">{{ selected()!.name }}</h2>
+              <button
+                (click)="startEdit()"
+                class="flex items-center gap-2 rounded-lg bg-secondary-container px-5 py-2 font-label text-label-md text-on-secondary-container transition-all lantern-glow-hover"
+              >
+                <span class="material-symbols-outlined text-sm">edit</span>
+                Edit
+              </button>
+            </div>
+
+            <p class="mb-6 font-body text-body-md text-on-surface-variant">{{ selected()!.description }}</p>
+
+            <div class="mb-6 space-y-3">
+              <div class="flex items-center gap-4">
+                <span class="w-28 font-label text-label-sm text-on-surface-variant uppercase">Strength</span>
+                <div class="flex gap-1">
+                  @for (i of [1,2,3,4,5,6,7,8,9,10]; track i) {
+                    <div class="h-5 w-5 rounded" [class]="i <= selected()!.abilities.strength ? 'bg-error' : 'bg-surface-variant'"></div>
+                  }
+                </div>
+                <span class="font-label text-label-md text-on-surface-variant">{{ selected()!.abilities.strength }}/10</span>
+              </div>
+              <div class="flex items-center gap-4">
+                <span class="w-28 font-label text-label-sm text-on-surface-variant uppercase">Defence</span>
+                <div class="flex gap-1">
+                  @for (i of [1,2,3,4,5,6,7,8,9,10]; track i) {
+                    <div class="h-5 w-5 rounded" [class]="i <= selected()!.abilities.defence ? 'bg-magic-leaf' : 'bg-surface-variant'"></div>
+                  }
+                </div>
+                <span class="font-label text-label-md text-on-surface-variant">{{ selected()!.abilities.defence }}/10</span>
+              </div>
+              <div class="flex items-center gap-4">
+                <span class="w-28 font-label text-label-sm text-on-surface-variant uppercase">Appearance</span>
+                <div class="flex gap-1">
+                  @for (i of [1,2,3,4,5,6,7,8,9,10]; track i) {
+                    <div class="h-5 w-5 rounded" [class]="i <= selected()!.abilities.appearance ? 'bg-tertiary' : 'bg-surface-variant'"></div>
+                  }
+                </div>
+                <span class="font-label text-label-md text-on-surface-variant">{{ selected()!.abilities.appearance }}/10</span>
+              </div>
+            </div>
+
+            <div class="font-headline text-headline-md text-primary">${{ selected()!.price.toFixed(2) }}</div>
+          </div>
         </div>
       </div>
-    }
+    </div>
+  }
 
-    <!-- DETAIL VIEW -->
-    @if (view() === 'detail' && selected()) {
-      <div>
-        <button (click)="backToList()" class="text-green-700 hover:text-green-900 font-medium mb-6 inline-flex items-center gap-1">
-          ← Back to list
-        </button>
+  <!-- EDIT VIEW -->
+  @if (view() === 'edit' && editDraft()) {
+    <div>
+      <button
+        (click)="cancel()"
+        class="mb-6 inline-flex items-center gap-1 font-label text-label-md text-magic-leaf transition-colors hover:text-primary"
+      >
+        <span class="material-symbols-outlined text-sm">arrow_back</span>
+        Back to detail
+      </button>
 
-        <div class="bg-white rounded-2xl shadow-md p-8 border border-green-100">
-          <div class="flex flex-col sm:flex-row gap-8">
+      <div class="rounded-xl border border-magic-leaf/10 bg-white p-8">
+        <h2 class="mb-6 font-headline text-headline-md text-primary">Editing: {{ editDraft()!.name }}</h2>
+
+        <div class="flex flex-col gap-8 sm:flex-row">
+          <div class="flex-shrink-0">
             <img
-              [src]="selected()!.imageUrl"
-              [alt]="selected()!.name"
-              class="w-48 h-48 rounded-2xl object-cover bg-green-50 flex-shrink-0"
+              [src]="editDraft()!.imageUrl"
+              [alt]="editDraft()!.name"
+              class="h-48 w-48 rounded-xl object-cover"
             />
-            <div class="flex-1">
-              <div class="flex items-start justify-between mb-4">
-                <h2 class="text-3xl font-bold text-green-900">{{ selected()!.name }}</h2>
-                <button
-                  (click)="startEdit()"
-                  class="bg-yellow-500 hover:bg-yellow-600 text-green-900 font-semibold px-5 py-2 rounded-lg transition-colors">
-                  Edit
-                </button>
-              </div>
-
-              <p class="text-gray-700 mb-6">{{ selected()!.description }}</p>
-
-              <div class="mb-6 space-y-3">
-                <div class="flex items-center gap-4">
-                  <span class="w-28 text-sm font-semibold text-gray-600">Strength</span>
-                  <div class="flex gap-1">
-                    @for (i of [1,2,3,4,5,6,7,8,9,10]; track i) {
-                      <div class="w-5 h-5 rounded" [class]="i <= selected()!.abilities.strength ? 'bg-red-500' : 'bg-gray-200'"></div>
-                    }
-                  </div>
-                  <span class="text-sm font-bold text-gray-700">{{ selected()!.abilities.strength }}/10</span>
-                </div>
-                <div class="flex items-center gap-4">
-                  <span class="w-28 text-sm font-semibold text-gray-600">Defence</span>
-                  <div class="flex gap-1">
-                    @for (i of [1,2,3,4,5,6,7,8,9,10]; track i) {
-                      <div class="w-5 h-5 rounded" [class]="i <= selected()!.abilities.defence ? 'bg-blue-500' : 'bg-gray-200'"></div>
-                    }
-                  </div>
-                  <span class="text-sm font-bold text-gray-700">{{ selected()!.abilities.defence }}/10</span>
-                </div>
-                <div class="flex items-center gap-4">
-                  <span class="w-28 text-sm font-semibold text-gray-600">Appearance</span>
-                  <div class="flex gap-1">
-                    @for (i of [1,2,3,4,5,6,7,8,9,10]; track i) {
-                      <div class="w-5 h-5 rounded" [class]="i <= selected()!.abilities.appearance ? 'bg-purple-500' : 'bg-gray-200'"></div>
-                    }
-                  </div>
-                  <span class="text-sm font-bold text-gray-700">{{ selected()!.abilities.appearance }}/10</span>
-                </div>
-              </div>
-
-              <div class="text-2xl font-bold text-green-800">${{ selected()!.price.toFixed(2) }}</div>
-            </div>
+            <p class="mt-2 text-center font-body text-body-sm text-outline">Placeholder image</p>
           </div>
-        </div>
-      </div>
-    }
 
-    <!-- EDIT VIEW -->
-    @if (view() === 'edit' && editDraft()) {
-      <div>
-        <button (click)="cancel()" class="text-green-700 hover:text-green-900 font-medium mb-6 inline-flex items-center gap-1">
-          ← Back to detail
-        </button>
-
-        <div class="bg-white rounded-2xl shadow-md p-8 border border-green-100">
-          <h2 class="text-2xl font-bold text-green-900 mb-6">Editing: {{ editDraft()!.name }}</h2>
-
-          <div class="flex flex-col sm:flex-row gap-8">
-            <div class="flex-shrink-0">
-              <img
-                [src]="editDraft()!.imageUrl"
-                [alt]="editDraft()!.name"
-                class="w-48 h-48 rounded-2xl object-cover bg-green-50"
+          <div class="flex-1 space-y-5">
+            <div>
+              <label class="mb-1 block font-label text-label-md text-on-surface-variant">Name</label>
+              <input
+                type="text"
+                [value]="editDraft()!.name"
+                (input)="editDraft.update(d => d ? { ...d, name: $any($event.target).value } : d)"
+                class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2 font-body text-body-md text-on-surface focus:border-magic-leaf focus:outline-none focus:ring-2 focus:ring-magic-leaf/30"
               />
-              <p class="text-xs text-gray-500 mt-2 text-center">Placeholder image</p>
             </div>
 
-            <div class="flex-1 space-y-5">
-              <!-- Name -->
-              <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-1">Name</label>
+            <div>
+              <label class="mb-1 block font-label text-label-md text-on-surface-variant">Description</label>
+              <textarea
+                [value]="editDraft()!.description"
+                (input)="editDraft.update(d => d ? { ...d, description: $any($event.target).value } : d)"
+                rows="3"
+                class="w-full resize-none rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2 font-body text-body-md text-on-surface focus:border-magic-leaf focus:outline-none focus:ring-2 focus:ring-magic-leaf/30"
+              ></textarea>
+            </div>
+
+            <div>
+              <label class="mb-1 block font-label text-label-md text-on-surface-variant">Price ($)</label>
+              <input
+                type="number"
+                min="0.01"
+                step="0.01"
+                [value]="editDraft()!.price"
+                (input)="editDraft.update(d => d ? { ...d, price: +$any($event.target).value } : d)"
+                class="w-32 rounded-lg border border-outline-variant bg-surface-container-lowest px-3 py-2 font-body text-body-md text-on-surface focus:border-magic-leaf focus:outline-none focus:ring-2 focus:ring-magic-leaf/30"
+              />
+            </div>
+
+            <div class="space-y-4">
+              <h3 class="font-label text-label-sm uppercase tracking-wide text-on-surface-variant">Abilities</h3>
+
+              <div class="flex items-center gap-4">
+                <label class="w-28 font-label text-label-md text-on-surface-variant">Strength</label>
                 <input
-                  type="text"
-                  [value]="editDraft()!.name"
-                  (input)="editDraft.update(d => d ? { ...d, name: $any($event.target).value } : d)"
-                  class="w-full border border-green-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+                  type="range" min="1" max="10"
+                  [value]="editDraft()!.abilities.strength"
+                  (input)="setAbility('strength', +$any($event.target).value)"
+                  class="flex-1 accent-error"
                 />
+                <span class="w-8 text-center font-label text-label-md text-error">{{ editDraft()!.abilities.strength }}</span>
               </div>
 
-              <!-- Description -->
-              <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-1">Description</label>
-                <textarea
-                  [value]="editDraft()!.description"
-                  (input)="editDraft.update(d => d ? { ...d, description: $any($event.target).value } : d)"
-                  rows="3"
-                  class="w-full border border-green-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 resize-none">
-                </textarea>
-              </div>
-
-              <!-- Price -->
-              <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-1">Price ($)</label>
+              <div class="flex items-center gap-4">
+                <label class="w-28 font-label text-label-md text-on-surface-variant">Defence</label>
                 <input
-                  type="number"
-                  min="0.01"
-                  step="0.01"
-                  [value]="editDraft()!.price"
-                  (input)="editDraft.update(d => d ? { ...d, price: +$any($event.target).value } : d)"
-                  class="w-32 border border-green-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+                  type="range" min="1" max="10"
+                  [value]="editDraft()!.abilities.defence"
+                  (input)="setAbility('defence', +$any($event.target).value)"
+                  class="flex-1 accent-magic-leaf"
                 />
+                <span class="w-8 text-center font-label text-label-md text-magic-leaf">{{ editDraft()!.abilities.defence }}</span>
               </div>
 
-              <!-- Ability sliders -->
-              <div class="space-y-4">
-                <h3 class="text-sm font-bold text-gray-700 uppercase tracking-wide">Abilities</h3>
-
-                <div class="flex items-center gap-4">
-                  <label class="w-28 text-sm font-semibold text-gray-600">Strength</label>
-                  <input
-                    type="range" min="1" max="10"
-                    [value]="editDraft()!.abilities.strength"
-                    (input)="setAbility('strength', +$any($event.target).value)"
-                    class="flex-1 accent-red-500"
-                  />
-                  <span class="w-8 text-center font-bold text-red-600">{{ editDraft()!.abilities.strength }}</span>
-                </div>
-
-                <div class="flex items-center gap-4">
-                  <label class="w-28 text-sm font-semibold text-gray-600">Defence</label>
-                  <input
-                    type="range" min="1" max="10"
-                    [value]="editDraft()!.abilities.defence"
-                    (input)="setAbility('defence', +$any($event.target).value)"
-                    class="flex-1 accent-blue-500"
-                  />
-                  <span class="w-8 text-center font-bold text-blue-600">{{ editDraft()!.abilities.defence }}</span>
-                </div>
-
-                <div class="flex items-center gap-4">
-                  <label class="w-28 text-sm font-semibold text-gray-600">Appearance</label>
-                  <input
-                    type="range" min="1" max="10"
-                    [value]="editDraft()!.abilities.appearance"
-                    (input)="setAbility('appearance', +$any($event.target).value)"
-                    class="flex-1 accent-purple-500"
-                  />
-                  <span class="w-8 text-center font-bold text-purple-600">{{ editDraft()!.abilities.appearance }}</span>
-                </div>
+              <div class="flex items-center gap-4">
+                <label class="w-28 font-label text-label-md text-on-surface-variant">Appearance</label>
+                <input
+                  type="range" min="1" max="10"
+                  [value]="editDraft()!.abilities.appearance"
+                  (input)="setAbility('appearance', +$any($event.target).value)"
+                  class="flex-1 accent-tertiary"
+                />
+                <span class="w-8 text-center font-label text-label-md text-tertiary">{{ editDraft()!.abilities.appearance }}</span>
               </div>
+            </div>
 
-              <!-- Actions -->
-              <div class="flex gap-3 pt-2">
-                <button
-                  (click)="save()"
-                  class="bg-green-700 hover:bg-green-800 text-white font-semibold px-6 py-2 rounded-lg transition-colors">
-                  Save Changes
-                </button>
-                <button
-                  (click)="cancel()"
-                  class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold px-6 py-2 rounded-lg transition-colors">
-                  Cancel
-                </button>
-              </div>
+            <div class="flex gap-3 pt-2">
+              <button
+                (click)="save()"
+                class="rounded-lg bg-primary px-6 py-2 font-label text-label-md text-on-primary transition-colors hover:bg-primary-container"
+              >
+                Save Changes
+              </button>
+              <button
+                (click)="cancel()"
+                class="rounded-lg bg-surface-container-high px-6 py-2 font-label text-label-md text-on-surface-variant transition-colors hover:bg-surface-container"
+              >
+                Cancel
+              </button>
             </div>
           </div>
         </div>
       </div>
-    }
-
-  </div>
-</div>
+    </div>
+  }
+</main>

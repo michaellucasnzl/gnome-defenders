@@ -18,8 +18,4 @@ export class ShopComponent {
   isInCart(gnomeId: number): boolean {
     return this.cartService.items().some((i) => i.gnome.id === gnomeId);
   }
-
-  abilityBar(value: number): string[] {
-    return Array.from({ length: 10 }, (_, i) => (i < value ? 'filled' : 'empty'));
-  }
 }

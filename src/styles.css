@@ -1,3 +1,134 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import 'tailwindcss';
+
+@theme {
+  /* Verdant Guardian palette from Stitch */
+  --color-primary: #004c22;
+  --color-on-primary: #ffffff;
+  --color-primary-container: #166534;
+  --color-on-primary-container: #93e0a2;
+  --color-primary-fixed: #a6f4b5;
+  --color-primary-fixed-dim: #8bd79b;
+  --color-on-primary-fixed: #00210b;
+
+  --color-secondary: #735c00;
+  --color-on-secondary: #ffffff;
+  --color-secondary-container: #fed01b;
+  --color-on-secondary-container: #6f5900;
+  --color-secondary-fixed: #ffe083;
+  --color-secondary-fixed-dim: #eec200;
+
+  --color-tertiary: #6e2e07;
+  --color-on-tertiary: #ffffff;
+  --color-tertiary-container: #8c441e;
+  --color-on-tertiary-container: #ffc1a6;
+
+  --color-background: #f0fdf4;
+  --color-on-background: #131e19;
+  --color-surface: #f0fdf4;
+  --color-on-surface: #131e19;
+  --color-on-surface-variant: #404940;
+  --color-surface-variant: #d9e6dd;
+  --color-surface-container: #e4f1e8;
+  --color-surface-container-low: #eaf7ee;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-high: #deebe3;
+  --color-surface-container-highest: #d9e6dd;
+  --color-surface-bright: #f0fdf4;
+  --color-surface-dim: #d0ddd5;
+
+  --color-outline: #707a6f;
+  --color-outline-variant: #bfc9bd;
+
+  --color-error: #ba1a1a;
+  --color-on-error: #ffffff;
+  --color-error-container: #ffdad6;
+  --color-on-error-container: #93000a;
+
+  --color-magic-leaf: #15803d;
+  --color-forest-deep: #064e3b;
+  --color-lantern-glow: #facc15;
+  --color-ethereal-white: #ffffff;
+  --color-earth-soil: #451a03;
+
+  --font-display: 'Literata', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+  --font-headline: 'Literata', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+  --font-body: 'Hanken Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-label: 'Hanken Grotesk', ui-sans-serif, system-ui, sans-serif;
+
+  --radius-sm: 0.25rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-full: 9999px;
+
+  --spacing-gutter: 24px;
+  --spacing-container: 1280px;
+  --spacing-stack-sm: 8px;
+  --spacing-stack-md: 16px;
+  --spacing-stack-lg: 32px;
+
+  --text-display-lg: 48px;
+  --text-display-lg--line-height: 56px;
+  --text-display-lg--letter-spacing: -0.02em;
+  --text-display-lg--font-weight: 700;
+
+  --text-headline-md: 24px;
+  --text-headline-md--line-height: 32px;
+  --text-headline-md--font-weight: 600;
+
+  --text-body-lg: 18px;
+  --text-body-lg--line-height: 28px;
+  --text-body-lg--font-weight: 400;
+
+  --text-body-md: 16px;
+  --text-body-md--line-height: 24px;
+  --text-body-md--font-weight: 400;
+
+  --text-body-sm: 14px;
+  --text-body-sm--line-height: 20px;
+  --text-body-sm--font-weight: 400;
+
+  --text-label-md: 14px;
+  --text-label-md--line-height: 20px;
+  --text-label-md--letter-spacing: 0.05em;
+  --text-label-md--font-weight: 600;
+
+  --text-label-sm: 12px;
+  --text-label-sm--line-height: 16px;
+  --text-label-sm--font-weight: 700;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-background);
+  color: var(--color-on-surface);
+}
+
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.lantern-glow-hover:hover {
+  box-shadow: 0 0 16px 2px rgba(250, 204, 21, 0.3);
+}
+
+.leaf-pattern {
+  background-image: radial-gradient(circle at 2px 2px, rgba(21, 128, 61, 0.05) 1px, transparent 0);
+  background-size: 24px 24px;
+}
+
+.card-inner-glow {
+  box-shadow: inset 0 0 15px rgba(21, 128, 61, 0.05);
+}

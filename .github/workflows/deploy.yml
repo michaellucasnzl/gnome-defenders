@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main, redesign/stitch]
+    branches: [main]
 
 permissions:
   contents: read
@@ -16,45 +16,19 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Checkout main (original)
-        uses: actions/checkout@v4
-        with:
-          ref: main
-          path: original
-
-      - name: Checkout redesign/stitch
-        uses: actions/checkout@v4
-        with:
-          ref: redesign/stitch
-          path: redesign
+      - uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '24'
           cache: 'npm'
-          cache-dependency-path: original/package-lock.json
 
-      - name: Install dependencies (original)
+      - name: Install dependencies
         run: npm ci
-        working-directory: original
 
-      - name: Build original
+      - name: Build Angular app
         run: npm run build
-        working-directory: original
-
-      - name: Install dependencies (redesign)
-        run: npm ci
-        working-directory: redesign
-
-      - name: Build redesign
-        run: npx ng build --base-href /gnome-defenders/redesign/
-        working-directory: redesign
-
-      - name: Merge redesign into original output
-        run: |
-          mkdir -p original/dist/gnome-defenders/browser/redesign
-          cp -r redesign/dist/gnome-defenders/browser/. original/dist/gnome-defenders/browser/redesign/
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -64,7 +38,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'original/dist/gnome-defenders/browser'
+          path: 'dist/gnome-defenders/browser'
 
       - name: Deploy to GitHub Pages
         id: deployment
